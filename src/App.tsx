@@ -1,4 +1,7 @@
-function App() {
-  return <div>Kanban Board</div>;
+export default function App() {
+  return (
+    <div className="text-2xl font-bold text-blue-600">
+      Kanban Board
+    </div>
+  );
 }
-export default App;
