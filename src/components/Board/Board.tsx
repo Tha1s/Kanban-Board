@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Column from '../Column/Column';
 import type { ColumnId } from '../../types/board';
 import { useBoard } from '../../hooks/useBoard';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function Board({ boardHook }: Props) {
-  const { board, moveCard } = boardHook;
+  const { board, moveCard, removeCard } = boardHook;
     const [draggedCard, setDraggedCard] = useState<string | null>(null);
 
     const handleDragStart = (cardId: string) => {
@@ -31,8 +31,12 @@ export default function Board({ boardHook }: Props) {
         setDraggedCard(null);
     }
     
+    const handleRemoveCard = (columnId: ColumnId, cardId: string) => {
+        removeCard(columnId, cardId);
+    };
+
     return (
-    <div className="flex gap-4 p-4">
+    <div className="flex flex-wrap gap-4 p-4">
       {Object.values(board).map((col) => (
         <Column
           key={col.id}
@@ -40,6 +44,8 @@ export default function Board({ boardHook }: Props) {
           columnId={col.id}
           onDropCard={handleDrop}
           onDragStart={handleDragStart}
+          onRemoveCard={handleRemoveCard}
+          draggedCard={draggedCard}
         />
       ))}
     </div>
