@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { BoardState, Card, ColumnId } from "../types/board";
+
+const STORAGE_KEY = 'kanban-board';
 
 const initialBoardState: BoardState = {
     todo: { id: 'todo', title: 'To Do', cards: [] },
@@ -7,8 +9,23 @@ const initialBoardState: BoardState = {
     done: { id: 'done', title: 'Done', cards: [] },
 };
 
+const getInitialBoard = (): BoardState => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return initialBoardState;
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return initialBoardState;
+  }
+};
+
 export function useBoard() {
-    const [board, setBoard] = useState<BoardState>(initialBoardState);
+    const [board, setBoard] = useState<BoardState>(getInitialBoard);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
+    }, [board]);
 
     const addCard = (columnId: ColumnId, card: Card) => {
         setBoard(prev => ({
