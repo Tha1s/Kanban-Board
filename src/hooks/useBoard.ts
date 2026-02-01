@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { isValidBoard } from "../utils/helper";
 import type { BoardState, Card, ColumnId } from "../types/board";
 
 const STORAGE_KEY = 'kanban-board';
@@ -26,6 +27,14 @@ export function useBoard() {
     useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
     }, [board]);
+
+    const importBoard = (data: unknown) => {
+        if (!isValidBoard(data)) return false;
+
+        setBoard(data);
+        return true;
+    };
+
 
     const addCard = (columnId: ColumnId, card: Card) => {
         setBoard(prev => ({
@@ -68,5 +77,5 @@ export function useBoard() {
         })
     }
 
-    return { board, addCard, removeCard, moveCard};
+    return { board, importBoard, addCard, removeCard, moveCard};
 }

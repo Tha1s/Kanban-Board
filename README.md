@@ -1,73 +1,102 @@
-# React + TypeScript + Vite
+# Kanban Board - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Projet vitrine réalisé en **React** + **TypeScript** + **TailwindCSS**.  
+> Version frontend complète, avec drag & drop desktop, filtrage, persistence, et import/export JSON sécurisé.
 
-Currently, two official plugins are available:
+## 🚀 Technologies  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** + **TypeScript**
 
-## React Compiler
+- **TailwindCSS** pour le style
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Vite** pour le bundling et le dev server
 
-## Expanding the ESLint configuration
+- **Hook personnalisé** useBoard pour gérer la logique
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- HTML Drag & Drop (desktop)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **LocalStorage** pour persistance automatique
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Import / Export **JSON** sécurisé
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Filtrage par tags
+
+- Responsive design (desktop)
+
+- Protection XSS sur titres et descriptions
+
+## ⚡ Fonctionnalités  
+
+- Ajouter, modifier et supprimer des cartes (titre, description)
+
+- Déplacer les cartes entre colonnes (drag & drop)
+
+- 3 **tags** filtrables selon l'importance de la tâche
+
+- Sauvegarde automatique via **LocalStorage**
+
+- Import / Export JSON avec validation
+
+- Interface responsive
+
+- Boutons **Add Card** par colonne
+
+- **Sécurité XSS** sur les entrées utilisateur
+
+## 🧩 Structure du projet  
+```text
+src/  
+├─ components/  
+│  ├─ Board/  
+│  │  └─ Board.tsx  
+│  ├─ Card/  
+│  │  └─ Card.tsx  
+│  └─ Column/  
+│     └─ Column.tsx  
+├─ hooks/  
+│  └─ useBoard.ts  
+├─ types/  
+│  └─ board.ts  
+├─ utils/  
+│  ├─ tags.ts
+│  └─ helper.ts  
+├─ main.tsx  
+└─ index.css  
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Composants principaux
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Board.tsx** — orchestrateur principal du board
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Column.tsx** — logique d’ajout, suppression et drag & drop
+
+- **Card.tsx** — affichage d’une carte (tag, titre, description)
+
+- **useBoard.ts** — hook central de la logique métier
+
+## ⚙️ Installation  
+```bash
+git clone https://github.com/Tha1s/Kanban-Board.git
+cd Kanban-Board
+npm install
+npm run dev
 ```
+
+
+Le projet sera accessible sur : **http://localhost:5173**
+
+## ✅ Bonnes pratiques  
+
+- Hook métier isolé (useBoard) → testable et modifiable
+
+- Pas de mutation directe du state React
+
+- Validation des inputs et JSON importé
+
+- Architecture composants claire et réutilisable
+
+- Design responsive optimisé desktop & mobile
+
+## 👤 Auteur  
+
+Développé par **Thaïs Alibert**
