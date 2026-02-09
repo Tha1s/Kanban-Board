@@ -3,7 +3,7 @@
 > Projet vitrine réalisé en **React** + **TypeScript** + **TailwindCSS**.  
 > Version frontend complète, avec drag & drop desktop, filtrage, persistence, et import/export JSON sécurisé.
 
-## 🚀 Technologies  
+## Technologies  
 
 - **React 18** + **TypeScript**
 
@@ -25,7 +25,7 @@
 
 - Protection XSS sur titres et descriptions
 
-## ⚡ Fonctionnalités  
+## Fonctionnalités  
 
 - Ajouter, modifier et supprimer des cartes (titre, description)
 
@@ -43,7 +43,7 @@
 
 - **Sécurité XSS** sur les entrées utilisateur
 
-## 🧩 Structure du projet  
+## Structure du projet  
 ```text
 src/  
 ├─ components/  
@@ -74,7 +74,7 @@ src/
 
 - **useBoard.ts** — hook central de la logique métier
 
-## ⚙️ Installation  
+## Installation  
 ```bash
 git clone https://github.com/Tha1s/Kanban-Board.git
 cd Kanban-Board
@@ -85,7 +85,7 @@ npm run dev
 
 Le projet sera accessible sur : **http://localhost:5173**
 
-## ✅ Bonnes pratiques  
+## Bonnes pratiques  
 
 - Hook métier isolé (useBoard) → testable et modifiable
 
@@ -97,6 +97,6 @@ Le projet sera accessible sur : **http://localhost:5173**
 
 - Design responsive optimisé desktop & mobile
 
-## 👤 Auteur  
+## Auteur  
 
 Développé par **Thaïs Alibert**
