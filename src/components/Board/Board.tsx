@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Column from '../Column/Column';
 import { useBoard } from '../../hooks/useBoard';
 import type { TagColor, ColumnId } from '../../types/board';
@@ -17,7 +17,22 @@ export default function Board({ boardHook }: Props) {
 
   const [filterTag, setFilterTag] = useState<TagColor | null>(null);
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+        setSettingsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const settingsRef = useRef<HTMLDivElement>(null);
+
 
   const handleDragStart = (cardId: string) => {
       setDraggedCard(cardId);
@@ -30,7 +45,7 @@ export default function Board({ boardHook }: Props) {
           col.cards.some(c => c.id === draggedCard)
       )?.id as ColumnId;
 
-      if (from && from !== draggedCard) {
+      if (from && from !== to) {
           moveCard(from, to, draggedCard);
       }
 
@@ -55,6 +70,7 @@ export default function Board({ boardHook }: Props) {
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingsOpen(false);
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -79,20 +95,56 @@ export default function Board({ boardHook }: Props) {
 
   return (
     <div className='flex flex-wrap flex-col'>
-      {<div className="flex gap-2 mb-4">
-      {(['high priority', 'medium priority', 'low priority'] as TagColor[]).map(tag => (
-        <button
-          key={tag}
-          onClick={() => setFilterTag(tag)}
-          className={`px-3 py-1 rounded text-white text-sm ${TAG_COLORS[tag]}`}
-        >
-          {tag}
-        </button>
-      ))}
-      <button onClick={() => setFilterTag(null)}>All</button>
+      <div className="flex items-center gap-3 mb-10">
+        <h1 className="text-9xl">Your tasks</h1>
+        <div className="flex gap-4 ml-auto">
+          {(['high priority', 'medium priority', 'low priority'] as TagColor[]).map(tag => (
+            <button
+              key={tag}
+              onClick={() => setFilterTag(tag)}
+              className={`px-3 py-2 rounded-full text-2xl ${TAG_COLORS[tag]}`}
+            >
+              {tag}
+            </button>
+          ))}
+          <button
+          className={`px-3 py-2 rounded-full text-2xl text-black bg-[#F2F2F2]`} 
+          onClick={() => setFilterTag(null)}>all</button>
 
-      </div>}
-      <div className="flex flex-wrap gap-4 p-4">
+
+        </div>
+
+        <div className="relative px-9" ref={settingsRef}>
+          <button
+            onClick={() => setSettingsOpen(v => !v)}
+            className="px-3 py-2 rounded-full text-2xl text-black bg-[#F2F2F2]"
+          >
+            Settings
+          </button>
+
+          {settingsOpen && (
+            <div className="absolute right-0 mt-2 bg-white border rounded shadow-lg text-sm z-50">
+              <button
+                onClick={() => {
+                  handleExport();
+                  setSettingsOpen(false);
+                }}
+                className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
+              >
+                Export JSON
+              </button>
+
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
+              >
+                Import JSON
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex gap-6 items-start overflow-x-auto">
         {Object.values(board).map((col) => (
           <Column
             key={col.id}
@@ -107,12 +159,13 @@ export default function Board({ boardHook }: Props) {
           />
         ))}
       </div>
-      <button onClick={handleExport}>
+
+      {/* <button onClick={handleExport}>
         Export JSON
       </button>
       <button onClick={() => fileInputRef.current?.click()}>
         Import JSON
-      </button>
+      </button>*/}
 
       <input
         type="file"
@@ -120,7 +173,7 @@ export default function Board({ boardHook }: Props) {
         ref={fileInputRef}
         onChange={handleImport}
         hidden
-      />
+      /> 
 
 
     </div>

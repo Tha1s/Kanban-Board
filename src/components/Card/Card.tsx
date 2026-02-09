@@ -11,32 +11,33 @@ type Props = {
 export default function Card({ card, onDragStart, onRemove, isDragging}: Props) {
     return (
         <div
-            className={`p-2 mb-2 bg-white rounded shadow cursor-move flex flex-col justify-between items-center
-                <<transition-transform duration-200
-                ${isDragging ? 'shadow-xl scale-105' : 'shadow'}`}
+            className={`bg-white rounded-2xl p-4 mb-4 cursor-move transition
+              ${isDragging ? 'scale-105 shadow-xl' : ''}`}
             draggable
             onDragStart={() => onDragStart(card.id)}
         >
-            <div className="flex justify-between items-center">
-                <span className="font-semibold">{card.title}</span>
+            <div className="flex justify-between items-start">
+                <h3 className="font-semibold">{card.title}</h3>
                 <button
-                className="text-red-500 font-bold ml-2 hover:text-red-700"
-                onClick={() => onRemove(card.id)}
+                    onClick={() => onRemove(card.id)}
+                    className="text-gray-400 hover:text-red-500"
                 >
                     ✕
                 </button>
             </div>
+
+            {card.description && (
+                <p className="mt-2 text-sm text-black whitespace-pre-line break-words leading-relaxed">
+                    {card.description}
+                </p>
+            )}
+
             {card.tag && (
-                <span
-                className={`px-2 py-0.5 rounded-full text-xs ${TAG_COLORS[card.tag]}`}
-                >
+                <span className={`mt-3 inline-block px-2 py-1 text-xs rounded-full ${TAG_COLORS[card.tag]}`}>
                     {card.tag}
                 </span>
             )}
 
-            {card.description && (
-                <p className="mt-1 text-sm text-gray-700 whitespace-pre-line">{card.description}</p>
-            )}
         </div>
     );
 }

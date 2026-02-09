@@ -5,8 +5,10 @@ export default function App() {
   const boardHook = useBoard();
 
   return (
-    <div className="p-4 min-h-screen bg-gray-200">
-      <Board boardHook={boardHook} />
+    <div className="min-h-screen bg-white">
+      <div className="mx-auto p-16">
+        <Board boardHook={boardHook} />
+      </div>
     </div>
   );
 }

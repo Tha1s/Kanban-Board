@@ -49,14 +49,22 @@ export default function Column({ column, columnId, filterTag, onDropCard, onDrag
   const [adding, setAdding] = useState(false);
   const [selectedTag, setSelectedTag] = useState<TagColor | null>(null);
 
+  const resetForm = () => {
+    setNewTitle('');
+    setNewDescription('');
+    setSelectedTag(null);
+    setAdding(false);
+  };
+
+
   return (
     
     <div
-      className="w-full sm:w-64 p-2 bg-gray-100 rounded"
+      className="w-72 sm:w-[32%] flex-shrink-0 bg-[#F2F2F2] rounded-[24px] p-4 flex flex-col"
       onDragOver={(e) => e.preventDefault()}
       onDrop={() => onDropCard(columnId)}
     >
-      <h2 className="font-bold mb-2">{column.title}</h2>
+      <h2 className="text-2xl mb-4">{column.title}</h2>
       {visibleCards.map((card) => (
         <Card
           key={card.id}
@@ -66,65 +74,67 @@ export default function Column({ column, columnId, filterTag, onDropCard, onDrag
           isDragging={draggedCard === card.id}
         />
       ))}
+
       {!adding && (
         <button
-          onClick={() => setAdding(true)}
-          className="mt-2 text-sm text-gray-500 hover:text-gray-800"
-        >
-          + Add card
+        onClick={() => setAdding(true)}
+        className="mt-3 w-full border border-teal-400 text-teal-500 text-2xl py-3 rounded-full">
+          + Create card
         </button>
       )}
 
       {adding && (
-        <div className="mt-2 space-y-2">
-          <input
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="Card title"
-            className="w-full p-1 border rounded"
-            autoFocus
-          />
+        <div className={'bg-white rounded-2xl p-4 mb-4'}>
+          <h3 className='font-semibold'>Create card</h3>
+          <div className="mt-2 space-y-2">
+            <input
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              placeholder="Card title*"
+              className="w-full bg-white border rounded-lg px-3 py-2 text-sm outline-none"
+              autoFocus
+            />
 
-          <textarea
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-            placeholder="Description (optional)"
-            className="w-full p-1 border rounded text-sm"
-            rows={2}
-          />
+            <textarea
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              placeholder="Description"
+              className="w-full bg-white border rounded-lg px-3 py-2 text-sm outline-none resize-none"
+              rows={2}
+            />
 
-          <div className="flex gap-1 items-center">
-            {(['high priority', 'medium priority', 'low priority'] as TagColor[]).map(tag => (
+            <div className="flex gap-1">
+              {(['low priority','medium priority','high priority'] as TagColor[]).map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={`w-3 h-3 rounded-full ${TAG_COLORS[tag]} ${
+                    selectedTag === tag ? 'w-4 h-4' : ''
+                  }`}
+                />
+              ))}
               <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`w-4 h-4 rounded-full ${TAG_COLORS[tag]} ${
-                  selectedTag === tag ? 'ring-2 ring-black' : ''
-                }`}
-              >
-              </button>
-            ))}
-            <button
-              onClick={() => setSelectedTag(null)}
-              className="text-xs text-gray-500 ml-2"
-            >
-              none
-            </button>
-          </div>
+                onClick={() => setSelectedTag(null)}
+                className={`w-3 h-3 rounded-full bg-[#D9D9D9] ${
+                    selectedTag === null ? 'w-4 h-4' : ''
+                  }`}
+              />
+            </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={handleAdd}
-              className="text-sm bg-blue-500 text-white px-2 py-1 rounded"
-            >
-              Add
-            </button>
-            <button
-              onClick={() => setAdding(false)}
-              className="text-sm text-gray-500"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleAdd}
+                className="bg-teal-500 text-white text-sm px-3 py-1 rounded-full"
+              >
+                Create
+              </button>
+              <button
+                onClick={resetForm}
+                className="border border-teal-400 text-teal-500 text-sm px-3 py-1 rounded-full"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
